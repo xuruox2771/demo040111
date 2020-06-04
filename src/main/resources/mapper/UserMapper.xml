@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cykj.demo.mapper.UserMapper">
+
+<!--用户登录-->
+    <select id="login" resultType="com.cykj.demo.entity.User" parameterType="com.cykj.demo.entity.User">
+        select id,login_name,true_name,pwd,state,level_id,score from tb_user
+        where login_name=#{loginName} and pwd=#{pwd}
+    </select>
+
+<!--注册-->
+    <insert id="regUser" parameterType="com.cykj.demo.entity.User" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_user(login_name,pwd,true_name,state,level_id,score)values (#{loginName},#{pwd},#{trueName},#{state},#{levelId},#{score})
+    </insert>
+
+
+<!--    删除-->
+    <delete id="delete" parameterType="java.lang.String">
+        delete from tb_admin where id =#{fasdfasdf}
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+</mapper>

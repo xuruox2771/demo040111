@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cykj.demo.mapper.MenuMapper">
+    <!--1vs多 嵌套查询开始-->
+
+<!--    <select id="findAllById" parameterType="java.lang.Integer" resultMap="roleMap">-->
+<!--   select id,role_name from tb_role where id = #{id}-->
+<!--</select>-->
+
+<!--    <select id="selectMenu" parameterType="java.lang.Integer" resultType="com.cykj.demo.entity.Menu">-->
+<!--   select m.* from tb_menu m inner join tb_role_menu rm on m.id=rm.menu_id where rm.role_id=#{roleId}-->
+<!--</select>-->
+<!--    <resultMap type="com.cykj.demo.entity.Role" id="roleMap">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <id column="role_name" property="roleName"/>-->
+<!--        <collection property="menuList" ofType="com.cykj.demo.entity.Menu" javaType="java.util.ArrayList" column="id"-->
+<!--                    select="selectMenu">-->
+<!--        </collection>-->
+<!--    </resultMap>-->
+    <!--嵌套查询结束-->
+
+    <!--嵌套结果-->
+    <select id="findAllByIdResult" parameterType="java.lang.Integer" resultMap="roleMenusResult">
+            select  r.*,m.menu_name,m.menu_url,m.parent_id,m.id as mId from tb_role r
+                inner join tb_role_menu rm on r.id = rm.role_id
+                inner join tb_menu m on m.id=rm.menu_id
+                where r.id=#{roleId}
+     </select>
+    <resultMap id="roleMenusResult" type="com.cykj.demo.entity.Role">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <collection property="menuList" ofType="com.cykj.demo.entity.Menu">
+            <id property="id" column="mId"/>
+<!--            <result property="menuName" column="menu_name"/>-->
+            <result property="menuUrl" column="menu_url"/>
+            <result property="menuName" column="menu_name"/>
+            <result property="parentId" column="parent_id"/>
+<!--            <result property="orders" column="orders"/>-->
+        </collection>
+    </resultMap>
+
+    <select id="findSecondMenu" parameterType="java.lang.Integer" resultType="com.cykj.demo.entity.Menu">
+        select * from tb_menu where parent_id in
+        <foreach collection="upidlist" index="i" item="id"  open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>
