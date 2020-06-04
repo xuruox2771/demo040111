@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 @Aspect
 @Component
-public class AopLog {
+public class AopLog { //safsghgfdsdfgfd
     private static Logger logger = Logger.getLogger(AopLog.class);
 
     //	切入点注解的表达式：就是需要AOP的地方(一般是业务逻辑层service,当然服务接口调用层controller也行,两者一起打印日志也行
